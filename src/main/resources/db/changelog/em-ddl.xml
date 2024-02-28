@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="em20240228" author="loren">
+
+        <createTable tableName="PRODUCT_METADATA" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="PRODUCT_CATEGORY_ID" type="varchar(50)"></column>
+            <column name="PRODUCT_NAME" type="varchar(100)"></column>
+            <column name="PRICE" type="numeric"></column>
+        </createTable>
+
+        <createTable tableName="PRODUCT" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="PRODUCT_ID" type="varchar(50)"></column>
+            <column name="PRODUCT_CATEGORY_ID" type="varchar(50)"></column>
+            <column name="CART_ID" type="varchar(50)"></column>
+        </createTable>
+
+        <createTable tableName="COUPON_METADATA" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="COUPON_TYPE_ID" type="varchar(50)"></column>
+            <column name="COUPON_TYPE" type="varchar(100)"></column>
+            <column name="USAGE" type="varchar(255)"></column>
+        </createTable>
+
+        <createTable tableName="COUPON" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="COUPON_ID" type="varchar(50)"></column>
+            <column name="COUPON_TYPE_ID" type="varchar(50)"></column>
+            <column name="CART_ID" type="varchar(50)"></column>
+        </createTable>
+
+        <sql>CREATE TYPE GENDER AS ENUM ('MALE','FEMALE')</sql>
+        <createTable tableName="EM_USER" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="USER_ID" type="varchar(20)"></column>
+            <column name="USER_NAME" type="varchar(100)"></column>
+            <column name="GENDER" type="GENDER"></column>
+            <column name="AGE" type="integer"></column>
+            <column name="CART_ID" type="varchar(50)"></column>
+        </createTable>
+
+        <createTable tableName="CART" schemaName="public">
+            <column name="ID" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="CART_ID" type="varchar(50)"></column>
+            <column name="USER_ID" type="varchar(20)"></column>
+            <column name="PRODUCT_ID" type="varchar(50)"></column>
+            <column name="COUPON_ID" type="varchar(50)"></column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

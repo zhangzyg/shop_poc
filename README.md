@@ -16,8 +16,7 @@ before enabling server, it'll use liquibase to create DDL & DML
 ### 3. Design
 
 #### E-R Diagram
-
-<img src="./SDD/E-R Diagram.png"></img>
+![](SDD/E-R%20Diagram.png)
 
 
 
