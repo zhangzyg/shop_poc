@@ -1,9 +1,6 @@
-FROM postgres:16.2-alpine3.19
+FROM openjdk:21
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+CMD ["java", "-jar", "app.jar"]
 
-ENV POSTGRES_PASSWORD=loren
-ENV POSTGRES_DB=em
-ENV POSTGRES_USER=loren
-
-EXPOSE 5432
-
-CMD ["postgres"]
+EXPOSE 8081
