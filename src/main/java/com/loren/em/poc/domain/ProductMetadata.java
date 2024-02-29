@@ -4,7 +4,6 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
 import java.util.UUID;
 
 import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;

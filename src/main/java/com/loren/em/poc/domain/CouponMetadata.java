@@ -28,9 +28,6 @@ public class CouponMetadata {
     @Column(name = "USAGE")
     private String usage;
 
-    @OneToMany(mappedBy = "couponId", cascade = CascadeType.ALL)
-    private List<Coupon> coupons;
-
     public CouponMetadata() {
         if (StringUtils.isEmpty(id)) {
             id = UUID.randomUUID().toString();

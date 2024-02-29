@@ -21,6 +21,10 @@ public class Coupon {
     private String couponId;
 
     @ManyToOne
+    @JoinColumn(name = "couponTypeId")
+    private CouponMetadata couponMetadata;
+
+    @ManyToOne
     @JoinColumn(name = "cartId")
     private Cart cart;
 
