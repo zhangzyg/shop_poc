@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: em
+    container_name: emContainer
     depends_on:
       - db
     environment:
@@ -13,7 +13,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=loren
       - SPRING_DATASOURCE_PASSWORD=loren
     ports:
-      - "8081:8081"
+      - "8080:8080"
 
   db:
     image: postgres:16.2-alpine3.19
