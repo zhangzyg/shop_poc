@@ -3,6 +3,7 @@ package com.loren.em.poc.controller;
 import com.loren.em.poc.domain.*;
 import com.loren.em.poc.enumeration.Gender;
 import com.loren.em.poc.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.loren.em.poc.constant.Constants.*;
@@ -40,18 +42,30 @@ public class DummyController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Transactional
     @GetMapping("/delete/metadata")
     public void deleteMetadata() {
         couponMetadataRepository.deleteAll();
         productMetadataRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
+    @Transactional
     @GetMapping("/delete/data")
     public void deleteData() {
+        cartRepository.deleteAll();
         couponRepository.deleteAll();
         productRepository.deleteAll();
     }
 
+    @Transactional
+    @GetMapping("/delete/user/cart")
+    public void deleteUserCart() {
+        userRepository.deleteAll();
+        cartRepository.deleteAll();
+    }
+
+    @Transactional
     @GetMapping("/init/metadata")
     public void initMetadata() {
         //coupon metadata
@@ -74,32 +88,40 @@ public class DummyController {
         productMetadata.setPrice(100.0d);
 
         ProductMetadata productMetadata2 = new ProductMetadata();
-        productMetadata.setProductCategoryId(PRODUCT_B);
-        productMetadata.setProductName(PRODUCT_B);
-        productMetadata.setPrice(70.0d);
+        productMetadata2.setProductCategoryId(PRODUCT_B);
+        productMetadata2.setProductName(PRODUCT_B);
+        productMetadata2.setPrice(70.0d);
 
         productMetadataRepository.saveAll(List.of(productMetadata, productMetadata2));
 
+    }
+
+    @Transactional
+    @GetMapping("/init/user/cart")
+    public void initUserCart() {
         //user
         User user = new User();
-        user.setUserId(UUID.randomUUID().toString());
+        user.setUserId("Account 1");
         user.setUserName("Account 1");
         user.setAge(1);
         user.setGender(Gender.MALE);
+        User jpaUser = userRepository.save(user);
 
-        userRepository.save(user);
-    }
-
-
-    @GetMapping("/init/products/coupons/cart")
-    public void initProductsCoupons() {
         //cart
         Cart cart = new Cart();
-        User user = userRepository.findByUserName("Account 1").get();
         cart.setCartId("Cart 1");
-        cart.setUser(user);
+        cart.setUser(jpaUser);
 
         Cart jpaCart = cartRepository.save(cart);
+        jpaUser.setCart(jpaCart);
+
+    }
+
+    @Transactional
+    @GetMapping("/init/products/coupons")
+    public void initProductsCoupons() {
+        Optional<Cart> byCartId = cartRepository.findByUserUserId("Account 1");
+        Cart jpaCart = byCartId.get();
 
         //products
         List<Product> productList = new ArrayList<>(11);

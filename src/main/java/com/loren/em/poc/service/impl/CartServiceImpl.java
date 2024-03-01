@@ -45,18 +45,24 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CouponRepository couponRepository;
+
     @Override
     public List<ProductStatistic> getProductStatistic(String userId) {
         Map<String, ProductStatistic> productStatisticMap = getProductStatisticMap(userId);
-        Cart cart = cartRepository.findByUserUserId(userId).get();
+        List<Coupon> coupons = couponRepository.findByCartUserUserId(userId);
         return productStatisticMap.values().stream().map(statistic -> {
-            List<String> applicableCoupons = getApplicableCoupons(cart.getCouponList(), statistic);
+            List<String> applicableCoupons = getApplicableCoupons(coupons, statistic);
             //if no coupon is applicable, then should be original price
             if (CollectionUtils.isEmpty(applicableCoupons)) {
                 statistic.setDisCountPrice(statistic.getTotalPrice());
                 return statistic;
             }
-            Double disCountPrice = consumeCouponAndGetDiscountPrice(applicableCoupons, cart.getCouponList(), statistic);
+            Double disCountPrice = consumeCouponAndGetDiscountPrice(applicableCoupons, coupons, statistic);
             statistic.setDisCountPrice(disCountPrice);
             return statistic;
         }).collect(Collectors.toList());
@@ -69,14 +75,13 @@ public class CartServiceImpl implements CartService {
         cartDto.setProductList(productList);
         cartDto.setTotalPrice(productList.stream().mapToDouble(ProductStatistic::getTotalPrice).sum());
         cartDto.setDisCountPrice(productList.stream().mapToDouble(ProductStatistic::getDisCountPrice).sum());
-        return null;
+        return cartDto;
     }
 
     private Map<String, ProductStatistic> getProductStatisticMap(String userId) {
         Optional<Cart> cartOptional = cartRepository.findByUserUserId(userId);
         if (cartOptional.isPresent()) {
-            Cart cart = cartOptional.get();
-            List<Product> productList = cart.getProductList();
+            List<Product> productList = productRepository.findByCartUserUserId(userId);
             Map<String, ProductStatistic> productStatisticMap = productList.stream().collect(Collectors
                     .toMap(product -> product.getProductCategory().getProductCategoryId(), product -> {
                         ProductStatistic productStatistic = new ProductStatistic();

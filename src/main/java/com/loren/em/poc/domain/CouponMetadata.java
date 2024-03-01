@@ -15,9 +15,6 @@ import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
 public class CouponMetadata {
 
     @Id
-    @Column(name = "ID", nullable = false, length = 36)
-    private String id;
-
     @Column(name = "COUPON_TYPE_ID", nullable = false, length = 50)
     private String couponTypeId;
 
@@ -28,9 +25,12 @@ public class CouponMetadata {
     @Column(name = "USAGE")
     private String usage;
 
-    public CouponMetadata() {
-        if (StringUtils.isEmpty(id)) {
-            id = UUID.randomUUID().toString();
-        }
+    @Override
+    public String toString() {
+        return "CouponMetadata{" +
+                "couponTypeId='" + couponTypeId + '\'' +
+                ", couponType='" + couponType + '\'' +
+                ", usage='" + usage + '\'' +
+                '}';
     }
 }

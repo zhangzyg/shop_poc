@@ -14,9 +14,6 @@ import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
 public class ProductMetadata {
 
     @Id
-    @Column(name = "ID", nullable = false, length = 36)
-    private String id;
-
     @Column(name = "PRODUCT_CATEGORY_ID", nullable = false, length = 50)
     private String productCategoryId;
 
@@ -27,9 +24,12 @@ public class ProductMetadata {
     @Column(name = "PRICE")
     private Double price;
 
-    public ProductMetadata() {
-        if (StringUtils.isEmpty(id)) {
-            id = UUID.randomUUID().toString();
-        }
+    @Override
+    public String toString() {
+        return "ProductMetadata{" +
+                "productCategoryId='" + productCategoryId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

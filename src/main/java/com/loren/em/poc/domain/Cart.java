@@ -15,9 +15,6 @@ import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
 public class Cart {
 
     @Id
-    @Column(name = "ID", nullable = false, length = 36)
-    private String id;
-
     @Column(name = "CART_ID", nullable = false, length = 50)
     private String cartId;
 
@@ -31,9 +28,11 @@ public class Cart {
     @OneToMany(mappedBy = "couponId", cascade = CascadeType.ALL)
     private List<Coupon> couponList;
 
-    public Cart() {
-        if (StringUtils.isEmpty(id)) {
-            id = UUID.randomUUID().toString();
-        }
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartId='" + cartId + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

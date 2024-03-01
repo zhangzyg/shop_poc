@@ -4,6 +4,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
@@ -14,9 +15,6 @@ import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
 public class Coupon {
 
     @Id
-    @Column(name = "ID", nullable = false, length = 36)
-    private String id;
-
     @Column(name = "COUPON_ID", nullable = false, length = 50)
     private String couponId;
 
@@ -29,8 +27,16 @@ public class Coupon {
     private Cart cart;
 
     public Coupon() {
-        if (StringUtils.isEmpty(id)) {
-            id = UUID.randomUUID().toString();
+        if(Objects.isNull(couponId)) {
+            couponId = UUID.randomUUID().toString();
         }
+
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "couponId='" + couponId + '\'' +
+                '}';
     }
 }

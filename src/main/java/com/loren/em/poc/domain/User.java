@@ -14,9 +14,6 @@ import static com.loren.em.poc.constant.Constants.PUBLIC_SCHEMA;
 public class User {
 
     @Id
-    @Column(name = "ID", nullable = false, length = 36)
-    private String id;
-
     @Column(name = "USER_ID", nullable = false, length = 20)
     private String userId;
 
@@ -34,7 +31,13 @@ public class User {
     @JoinColumn(name = "cartId")
     private Cart cart;
 
-    public User() {
-        id = UUID.randomUUID().toString();
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", gender=" + gender +
+                ", age=" + age +
+                '}';
     }
 }
